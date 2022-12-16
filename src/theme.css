@@ -1,0 +1,15 @@
+@import "open-props/style";
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--t-bg);
+  color: var(--t-text);
+}
+
+:root {
+  --t-bg: var(--gray-10);
+  --t-bg-light: var(--gray-8);
+  --t-bg-light-2: var(--gray-9);
+  --t-text: white;
+  --t-text-light: var(--gray-5);
+}
