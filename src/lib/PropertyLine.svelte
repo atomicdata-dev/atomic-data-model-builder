@@ -112,7 +112,7 @@
       <h1>Configure {$shortname}</h1>
     </svelte:fragment>
     <svelte:fragment slot="content">
-      <label for="">Classtype</label>
+      <label for="">Constrain to class</label>
       <ClassSelect on:select={selectClassType} selectedSubject={$classType} />
     </svelte:fragment>
     <svelte:fragment slot="controls">

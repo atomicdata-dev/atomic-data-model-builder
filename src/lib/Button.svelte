@@ -1,4 +1,4 @@
-<button on:click>
+<button on:click type="button">
   <slot />
 </button>
 

@@ -7,7 +7,7 @@
   export let title: string;
 </script>
 
-<button on:click {disabled} {title}>
+<button on:click {disabled} {title} type="button">
   <Icon data={icon} {size} />
 </button>
 

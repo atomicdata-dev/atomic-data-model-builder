@@ -4,8 +4,10 @@
   export let disabled: boolean | undefined = undefined;
   export let required: boolean | undefined = undefined;
   export let id: string | undefined = undefined;
+  export let autofocus: boolean | undefined = undefined;
 </script>
 
+<!-- svelte-ignore a11y-autofocus -->
 <input
   type="text"
   bind:value
@@ -13,7 +15,9 @@
   {disabled}
   {required}
   {id}
+  {autofocus}
   on:blur
+  on:keydown
 />
 
 <style>

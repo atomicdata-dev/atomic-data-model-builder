@@ -10,7 +10,7 @@
 <script lang="ts">
   import { urls } from '@tomic/lib';
   import { createEventDispatcher } from 'svelte';
-  import Select from 'svelte-select/Select.svelte';
+  import Select from 'svelte-select';
   import { store } from '../atomic/ADStore';
   import { classesStore } from './stores/classes';
   import { externalClasses } from './stores/collections';
@@ -45,7 +45,11 @@
   $: {
     Promise.all(
       [...$classesStore, ...$externalClasses].map(subject => {
-        return $store.getResourceAsync(subject);
+        try {
+          return $store.getResourceAsync(subject);
+        } catch (e) {
+          return undefined;
+        }
       }),
     ).then(props => {
       items = props.map(resource => ({
@@ -78,7 +82,7 @@
       delete i.created;
       return i;
     });
-
+    console.log('selected', e.detail);
     dispatch('select', e.detail);
   };
 </script>

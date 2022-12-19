@@ -1,6 +1,7 @@
 <script lang="ts">
   import Icon from 'svelte-icon';
   import editoutline from '../assets/icons/eva/edit-outline.svg?raw';
+  import TextInput from './TextInput.svelte';
   import { toSlug } from './toSlug';
   export let title: string;
 
@@ -26,8 +27,7 @@
 </script>
 
 {#if editing}
-  <input
-    type="text"
+  <TextInput
     bind:value={title}
     on:blur={disableEditing}
     on:keydown={handleKeyDown}

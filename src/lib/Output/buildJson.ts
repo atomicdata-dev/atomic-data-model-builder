@@ -17,7 +17,7 @@ const prepareSubject = (subject: string, replaceBase: boolean) => {
 };
 
 const createSetter =
-  (resource: Resource, obj: Object, localProperties: string[]) =>
+  (resource: Resource, obj: Object, localSubjects: string[]) =>
   (key: string, checkSubjectsForLocalURL: boolean = false) => {
     const value = resource.get(key);
 
@@ -26,9 +26,14 @@ const createSetter =
     }
 
     if (checkSubjectsForLocalURL) {
-      const newValue = normalizeArray(value).map(s =>
-        prepareSubject(s as string, localProperties.includes(s as string)),
-      );
+      const newValue = Array.isArray(value)
+        ? value.map(s =>
+            prepareSubject(s as string, localSubjects.includes(s as string)),
+          )
+        : prepareSubject(
+            value as string,
+            localSubjects.includes(value as string),
+          );
 
       obj[key] = newValue;
     } else {
@@ -38,7 +43,7 @@ const createSetter =
 
 const classToObject = (
   resource: Resource,
-  localProperties: string[],
+  localSubjects: string[],
   asImporter: boolean,
 ) => {
   const key = asImporter ? localIdKey : '@id';
@@ -47,7 +52,7 @@ const classToObject = (
     [key]: prepareSubject(resource.getSubject(), asImporter),
   };
 
-  const set = createSetter(resource, obj, localProperties);
+  const set = createSetter(resource, obj, localSubjects);
 
   set(urls.properties.shortname);
   set(urls.properties.isA, asImporter);
@@ -61,7 +66,7 @@ const classToObject = (
 
 const propertyToObject = (
   resource: Resource,
-  localProperties: string[],
+  localSubjects: string[],
   asImporter: boolean,
 ) => {
   const key = asImporter ? localIdKey : '@id';
@@ -70,7 +75,7 @@ const propertyToObject = (
     [key]: prepareSubject(resource.getSubject(), asImporter),
   };
 
-  const set = createSetter(resource, obj, localProperties);
+  const set = createSetter(resource, obj, localSubjects);
 
   set(urls.properties.shortname);
   set(urls.properties.isA, asImporter);
@@ -89,11 +94,12 @@ export const buildJSON = (
   asImporter: boolean,
 ): string => {
   const objects: Array<object> = [];
+  const localSubjects = [...localProperties, ...classes];
 
   for (const subject of classes) {
     const resource = store.getResourceLoading(subject);
 
-    objects.push(classToObject(resource, localProperties, asImporter));
+    objects.push(classToObject(resource, localSubjects, asImporter));
 
     const properties = Array.from(
       new Set([
@@ -118,7 +124,7 @@ export const buildJSON = (
       }
 
       const propResource = store.getResourceLoading(propSubject);
-      objects.push(propertyToObject(propResource, localProperties, asImporter));
+      objects.push(propertyToObject(propResource, localSubjects, asImporter));
     }
   }
 

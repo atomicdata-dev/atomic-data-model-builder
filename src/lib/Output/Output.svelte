@@ -2,6 +2,7 @@
   import Highlight from 'svelte-highlight';
   import json from 'svelte-highlight/languages/json';
   import atomOneDark from 'svelte-highlight/styles/atom-one-dark';
+  import { fade } from 'svelte/transition';
   import { store } from '../../atomic/ADStore';
   import { classesStore } from '../stores/classes';
   import { propertiesStore } from '../stores/properties';
@@ -23,7 +24,7 @@
     );
 
     if (document.querySelectorAll(':invalid').length > 0) {
-      waringMessage = 'Warning: Some fields are invalid.';
+      waringMessage = 'Warning: Some required fields are empty.';
     } else {
       waringMessage = '';
     }
@@ -61,7 +62,9 @@
 </svelte:head>
 <section>
   <h2>Output</h2>
-  <p class="waring">{waringMessage}</p>
+  {#if waringMessage}
+    <p class="waring" transition:fade={{ duration: 100 }}>{waringMessage}</p>
+  {/if}
   <input
     type="checkbox"
     id="import-toggle"

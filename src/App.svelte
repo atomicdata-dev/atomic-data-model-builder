@@ -13,8 +13,8 @@
   };
 </script>
 
+<AppBar />
 <main>
-  <AppBar />
   <Container>
     <div class="wrapper">
       <ClassList />
