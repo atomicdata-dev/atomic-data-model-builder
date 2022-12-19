@@ -9,9 +9,12 @@ export default defineConfig({
     svelte(),
     VitePWA({
       registerType: 'autoUpdate',
+      devOptions: {
+        enabled: true,
+      },
       manifest: {
-        name: 'Atomic Data Browser',
-        short_name: 'Atomic',
+        name: 'Atomic Data Model Builder',
+        short_name: 'AD Builder',
         description:
           'A fast, easy and intuitive tool to create Atomic Data models',
         theme_color: '#17191d',
