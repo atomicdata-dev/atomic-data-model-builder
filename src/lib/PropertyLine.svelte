@@ -107,7 +107,7 @@
   />
 </form>
 {#if hasOptions}
-  <Dialog bind:show={showDialog}>
+  <Dialog bind:show={showDialog} overflow>
     <svelte:fragment slot="title">
       <h1>Configure {$shortname}</h1>
     </svelte:fragment>
@@ -124,9 +124,18 @@
 <style>
   .wrapper {
     display: flex;
+    flex-wrap: nowrap;
     gap: 0.3rem;
   }
 
+  @media (max-width: 900px) {
+    .wrapper {
+      border-bottom: 1px solid var(--t-bg-light);
+      flex-wrap: wrap;
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
   label {
     display: block;
     font-weight: bold;

@@ -90,4 +90,15 @@
     flex-direction: column;
     gap: 1rem;
   }
+
+  @media (max-width: 600px) {
+    .wrapper {
+      grid-template-areas:
+        'title'
+        'requires'
+        'recommends'
+        'description';
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

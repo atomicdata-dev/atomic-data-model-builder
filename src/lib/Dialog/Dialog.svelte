@@ -3,14 +3,18 @@
   import close from '../../assets/icons/eva/close-outline.svg?raw';
 
   export let show: boolean = false;
+  export let overflow: boolean = false;
+
   let dialog: HTMLDialogElement;
 
   $: if (dialog && show) {
     dialog.showModal();
+    document.body.style.overflow = 'hidden';
   }
 
   $: if (dialog && !show) {
     dialog.close();
+    document.body.style.overflow = 'visible';
   }
 
   const closeDialog = () => {
@@ -23,7 +27,9 @@
     <slot name="title" />
     <IconButton icon={close} on:click={closeDialog} title="close" />
   </div>
-  <slot name="content" />
+  <div class="content-wrapper" class:overflow={!overflow}>
+    <slot name="content" />
+  </div>
   <div class="line" />
   <div class="controls">
     <slot name="controls" />
@@ -39,6 +45,9 @@
     color: var(--t-text);
     border: none;
     box-shadow: var(--shadow-4);
+    max-height: 90vh;
+    overscroll-behavior: contain;
+    max-height: 90dvh;
   }
 
   dialog:modal {
@@ -47,6 +56,14 @@
   dialog::backdrop {
     background-color: rgba(0 0 0 / 0.5);
     backdrop-filter: blur(3px);
+  }
+
+  .content-wrapper {
+    max-height: 60vh;
+  }
+
+  .overflow {
+    overflow-y: auto;
   }
 
   .titlebar {

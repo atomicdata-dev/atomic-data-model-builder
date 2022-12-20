@@ -5,7 +5,7 @@
   export let required: boolean = false;
 </script>
 
-<textarea {name} {id} {required} cols="30" rows="10" bind:value />
+<textarea {name} {id} {required} rows="10" bind:value />
 
 <style>
   textarea {
