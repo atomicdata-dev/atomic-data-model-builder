@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@tomic/lib": "^0.34.0",
+    "@tomic/svelte": "^0.34.10",
     "open-props": "^1.5.1",
     "svelte-icon": "^1.3.0",
     "svelte-select": "^5.0.0"

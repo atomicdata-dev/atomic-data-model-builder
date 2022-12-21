@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { store } from '@tomic/svelte';
   import { Datatype, urls } from '@tomic/lib';
   import plus from '../assets/icons/eva/plus-outline.svg?raw';
-  import { store } from '../atomic/ADStore';
   import IconButton from './IconButton.svelte';
   import PropertyLine from './PropertyLine.svelte';
   import PropertySelect, { type Item } from './PropertySelect.svelte';

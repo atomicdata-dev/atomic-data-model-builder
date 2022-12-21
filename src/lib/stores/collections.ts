@@ -1,6 +1,6 @@
 import { get, readable, writable } from 'svelte/store';
+import { store } from '@tomic/svelte';
 import { urls, type Property as PropertyType } from '@tomic/lib';
-import { store } from '../../atomic/ADStore';
 
 export enum Source {
   Local = 'local',

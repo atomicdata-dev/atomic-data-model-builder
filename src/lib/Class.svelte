@@ -1,10 +1,10 @@
 <script lang="ts">
   import { urls } from '@tomic/lib';
+  import { getResource, getValue } from '@tomic/svelte';
   import { createEventDispatcher } from 'svelte';
   import Icon from 'svelte-icon';
   import cubeoutline from '../assets/icons/eva/cube-outline.svg?raw';
   import trash2outline from '../assets/icons/eva/trash-2-outline.svg?raw';
-  import { getResource, getValue } from '../atomic/ADStore';
   import EditableTitle from './EditableTitle.svelte';
   import IconButton from './IconButton.svelte';
   import PropList from './PropList.svelte';

@@ -3,7 +3,7 @@
   import json from 'svelte-highlight/languages/json';
   import atomOneDark from 'svelte-highlight/styles/atom-one-dark';
   import { fade } from 'svelte/transition';
-  import { store } from '../../atomic/ADStore';
+  import { store } from '@tomic/svelte';
   import { classesStore } from '../stores/classes';
   import { propertiesStore } from '../stores/properties';
   import { buildJSON } from './buildJson';

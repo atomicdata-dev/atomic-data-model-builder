@@ -9,10 +9,9 @@
 
 <script lang="ts">
   import { Property, urls, Datatype } from '@tomic/lib';
-  // https://github.com/rob-balfre/svelte-select
   import Select from 'svelte-select';
   import { createEventDispatcher } from 'svelte';
-  import { store } from '../atomic/ADStore';
+  import { store } from '@tomic/svelte';
   import { flattenObj } from './flattenObj';
   import { externalProperties } from './stores/collections';
   import { toSlug } from './toSlug';

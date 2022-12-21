@@ -4,9 +4,6 @@ import { localURL } from '../stores/localURL';
 
 const localIdKey = 'https://atomicdata.dev/properties/localId';
 
-const normalizeArray = <T>(value: T | T[]): T[] =>
-  Array.isArray(value) ? value : [value];
-
 const prepareSubject = (subject: string, replaceBase: boolean) => {
   if (!replaceBase) {
     return subject;

@@ -1,9 +1,9 @@
 <script lang="ts">
   import { Datatype, Property, urls } from '@tomic/lib';
   import { createEventDispatcher } from 'svelte';
+  import { getResource, getValue, store } from '@tomic/svelte';
   import trash2outline from '../assets/icons/eva/trash-2-outline.svg?raw';
   import options from '../assets/icons/eva/options-2-outline.svg?raw';
-  import { getResource, getValue, store } from '../atomic/ADStore';
   import IconButton from './IconButton.svelte';
   import SelectInput from './SelectInput.svelte';
   import { externalProperties } from './stores/collections';

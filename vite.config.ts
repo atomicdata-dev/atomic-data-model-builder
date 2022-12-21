@@ -9,9 +9,6 @@ export default defineConfig({
     svelte(),
     VitePWA({
       registerType: 'autoUpdate',
-      devOptions: {
-        enabled: true,
-      },
       manifest: {
         name: 'Atomic Data Model Builder',
         short_name: 'AD Builder',

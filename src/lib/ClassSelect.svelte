@@ -11,7 +11,7 @@
   import { urls } from '@tomic/lib';
   import { createEventDispatcher } from 'svelte';
   import Select from 'svelte-select';
-  import { store } from '../atomic/ADStore';
+  import { store } from '@tomic/svelte';
   import { classesStore } from './stores/classes';
   import { externalClasses } from './stores/collections';
   import { toSlug } from './toSlug';
