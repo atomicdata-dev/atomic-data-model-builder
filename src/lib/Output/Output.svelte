@@ -7,13 +7,21 @@
   import { classesStore } from '../stores/classes';
   import { propertiesStore } from '../stores/properties';
   import { buildJSON } from './buildJson';
+  import { exportType } from '../stores/config';
+  import Button from '../Button.svelte';
+  import { exportToServer } from './exportToServer';
 
   const classSubscriptions = new Set<string>();
   const propertySubscriptions = new Set<string>();
 
   let outputText = 'Add some classes and properties to see the output.';
   let buildForImporter = false;
-  let waringMessage = '';
+  let warningMessage = '';
+
+  $: if ($exportType === 'remote') {
+    buildForImporter = false;
+    update();
+  }
 
   const update = () => {
     outputText = buildJSON(
@@ -24,9 +32,9 @@
     );
 
     if (document.querySelectorAll(':invalid').length > 0) {
-      waringMessage = 'Warning: Some required fields are empty.';
+      warningMessage = 'Warning: Some required fields are empty.';
     } else {
-      waringMessage = '';
+      warningMessage = '';
     }
   };
 
@@ -55,6 +63,12 @@
     buildForImporter = (e.target as HTMLInputElement).checked;
     update();
   };
+
+  const handleExportToServer = () => {
+    const localSubjects = [...$classesStore, ...$propertiesStore];
+
+    exportToServer($store, localSubjects);
+  };
 </script>
 
 <svelte:head>
@@ -62,16 +76,22 @@
 </svelte:head>
 <section>
   <h2>Output</h2>
-  {#if waringMessage}
-    <p class="waring" transition:fade={{ duration: 100 }}>{waringMessage}</p>
+  {#if warningMessage}
+    <p class="waring" transition:fade={{ duration: 100 }}>{warningMessage}</p>
   {/if}
-  <input
-    type="checkbox"
-    id="import-toggle"
-    bind:checked={buildForImporter}
-    on:input={handleCheck}
-  />
-  <label for="import-toggle">Importer compatible JSON</label>
+  {#if $exportType === 'remote'}
+    <Button disabled={warningMessage.length > 0} on:click={handleExportToServer}
+      >Export to server</Button
+    >
+  {:else}
+    <input
+      type="checkbox"
+      id="import-toggle"
+      bind:checked={buildForImporter}
+      on:input={handleCheck}
+    />
+    <label for="import-toggle">Importer compatible JSON</label>
+  {/if}
   <Highlight language={json} code={outputText} />
 </section>
 

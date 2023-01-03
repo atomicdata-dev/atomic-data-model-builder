@@ -3,7 +3,7 @@
   import options from '../assets/icons/eva/options-2-outline.svg?raw';
   import github from '../assets/icons/eva/github-outline.svg?raw';
   import Container from './Container.svelte';
-  import Config from './Config.svelte';
+  import Config from './Config/Config.svelte';
   import Icon from 'svelte-icon/Icon.svelte';
 
   let showConfig = false;

@@ -1,16 +1,14 @@
 import { urls, type Resource, type Store } from '@tomic/lib';
 import { get } from 'svelte/store';
-import { localURL } from '../stores/localURL';
+import { INTERNAL_BASE_ID } from '../constants';
+import { localURL } from '../stores/config';
 
 const localIdKey = 'https://atomicdata.dev/properties/localId';
 
-const prepareSubject = (subject: string, replaceBase: boolean) => {
-  if (!replaceBase) {
-    return subject;
-  }
+const prepareSubject = (subject: string, removeBase: boolean) => {
+  const base = removeBase ? '' : get(localURL);
 
-  const base = get(localURL);
-  return subject.replace(base, '');
+  return subject.replace(INTERNAL_BASE_ID, base);
 };
 
 const createSetter =
@@ -22,20 +20,16 @@ const createSetter =
       return;
     }
 
-    if (checkSubjectsForLocalURL) {
-      const newValue = Array.isArray(value)
-        ? value.map(s =>
-            prepareSubject(s as string, localSubjects.includes(s as string)),
-          )
-        : prepareSubject(
-            value as string,
-            localSubjects.includes(value as string),
-          );
+    const shouldRemoveBase = (value: string) =>
+      checkSubjectsForLocalURL && localSubjects.includes(value);
 
-      obj[key] = newValue;
-    } else {
-      obj[key] = value;
-    }
+    const newValue = Array.isArray(value)
+      ? value.map(s =>
+          prepareSubject(s as string, shouldRemoveBase(s as string)),
+        )
+      : prepareSubject(value as string, shouldRemoveBase(value as string));
+
+    obj[key] = newValue;
   };
 
 const classToObject = (
@@ -56,7 +50,7 @@ const classToObject = (
   set(urls.properties.description);
   set(urls.properties.requires, asImporter);
   set(urls.properties.recommends, asImporter);
-  !asImporter && set(urls.properties.parent);
+  !asImporter && set(urls.properties.parent, false);
 
   return obj;
 };
@@ -79,7 +73,7 @@ const propertyToObject = (
   set(urls.properties.description);
   set(urls.properties.datatype);
   set(urls.properties.classType, asImporter);
-  !asImporter && set(urls.properties.parent);
+  !asImporter && set(urls.properties.parent, false);
 
   return obj;
 };

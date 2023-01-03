@@ -1,4 +1,8 @@
-<button on:click type="button">
+<script lang="ts">
+  export let disabled: undefined | boolean = undefined;
+</script>
+
+<button on:click type="button" {disabled}>
   <slot />
 </button>
 
@@ -17,8 +21,14 @@
       box-shadow 100ms ease-in-out;
   }
 
-  button:hover,
-  button:focus {
+  button:disabled {
+    color: var(--t-text-light);
+    border-color: var(--t-text-light);
+    cursor: not-allowed;
+  }
+
+  button:hover:not(:disabled),
+  button:focus:not(:disabled) {
     background-color: var(--t-text);
     color: var(--t-bg);
     box-shadow: var(--shadow-4);

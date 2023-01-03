@@ -5,10 +5,11 @@
   import Icon from 'svelte-icon';
   import cubeoutline from '../assets/icons/eva/cube-outline.svg?raw';
   import trash2outline from '../assets/icons/eva/trash-2-outline.svg?raw';
+  import { INTERNAL_BASE_ID } from './constants';
   import EditableTitle from './EditableTitle.svelte';
   import IconButton from './IconButton.svelte';
   import PropList from './PropList.svelte';
-  import { localURL } from './stores/localURL';
+  import { localURL } from './stores/config';
   import TextArea from './TextArea.svelte';
   const dispatch = createEventDispatcher<{ delete: string }>();
   export let subject: string;
@@ -28,7 +29,7 @@
   let parent = getValue<string>(resource, urls.properties.parent);
 
   isA.set([urls.classes.class]);
-  parent.set($localURL);
+  parent.set(INTERNAL_BASE_ID);
 
   $: if ($name === undefined) {
     $name = 'untitled';

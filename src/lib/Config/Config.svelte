@@ -1,13 +1,18 @@
 <script lang="ts">
+  import { Agent } from '@tomic/lib';
+  import { store } from '@tomic/svelte';
   import { get } from 'svelte/store';
-  import Button from './Button.svelte';
-  import Dialog from './Dialog/Dialog.svelte';
-  import { externalSources } from './stores/collections';
-  import { localURL } from './stores/localURL';
-  import TextArea from './TextArea.svelte';
-  import TextInput from './TextInput.svelte';
+  import Button from '../Button.svelte';
+  import Dialog from '../Dialog/Dialog.svelte';
+  import { externalSources } from '../stores/collections';
+  import { exportType, localURL } from '../stores/config';
+  import TextArea from '../TextArea.svelte';
+  import TextInput from '../TextInput.svelte';
+  import OutputForm, { type OutputConfig } from './OutputForm.svelte';
 
   export let show: boolean = false;
+  let outputFormValid: boolean;
+  let outputConfig: OutputConfig;
 
   let sourcesValue: string = get(externalSources).join('\n');
 
@@ -24,6 +29,21 @@
     });
 
     $externalSources = filtered;
+    $exportType = outputConfig.type;
+
+    if (outputConfig.type === 'remote') {
+      $store.setServerUrl(outputConfig.remoteUrl);
+
+      if (outputConfig.agentSubject && outputConfig.agentKey) {
+        const agent = new Agent(
+          outputConfig.agentKey,
+          outputConfig.agentSubject,
+        );
+        $store.setAgent(agent);
+      } else {
+        $store.setAgent(undefined);
+      }
+    }
 
     show = false;
   };
@@ -49,7 +69,10 @@
           on:blur={handleLocalURLBlur}
         />
         <p class="helper">
-          The url used to generate subjects for new classes and properties
+          The url used to generate subjects for new classes and properties when
+          exporting to a server this should be an exsiting resource on the
+          server like a drive that will be the parent to all generated
+          resources.
         </p>
       </div>
       <div class="form-field">
@@ -60,10 +83,11 @@
           by newline)
         </p>
       </div>
+      <OutputForm bind:valid={outputFormValid} bind:outputConfig />
     </form>
   </svelte:fragment>
   <svelte:fragment slot="controls">
-    <Button on:click={handleDone}>Done</Button>
+    <Button on:click={handleDone} disabled={!outputFormValid}>Done</Button>
   </svelte:fragment>
 </Dialog>
 

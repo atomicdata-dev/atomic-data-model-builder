@@ -6,14 +6,15 @@
   import PropertyLine from './PropertyLine.svelte';
   import PropertySelect, { type Item } from './PropertySelect.svelte';
   import { generateRandomSubject } from './randomSubject';
-  import { localURL } from './stores/localURL';
+  import { localURL } from './stores/config';
   import { propertiesStore } from './stores/properties';
+  import { INTERNAL_BASE_ID } from './constants';
 
   export let properties: string[] = [];
   let selectorActive = false;
 
   const createNewLocalProperty = async (name: string): Promise<string> => {
-    const newSubject = generateRandomSubject($localURL);
+    const newSubject = generateRandomSubject();
 
     const resource = $store.getResourceLoading(newSubject, {
       newResource: true,
@@ -22,7 +23,7 @@
     await resource.set(urls.properties.shortname, name, $store);
     await resource.set(urls.properties.datatype, Datatype.STRING, $store);
     await resource.set(urls.properties.isA, [urls.classes.property], $store);
-    await resource.set(urls.properties.parent, $localURL, $store);
+    await resource.set(urls.properties.parent, INTERNAL_BASE_ID, $store);
 
     // Add the resource to the local properties store so other components can see it too.
     $propertiesStore = [...$propertiesStore, newSubject];
