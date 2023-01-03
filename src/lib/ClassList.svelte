@@ -1,14 +1,15 @@
 <script lang="ts">
   import { generateRandomSubject } from './randomSubject';
   import { classesStore } from './stores/classes';
-  import { localURL } from './stores/localURL';
+  import { localURL } from './stores/config';
   import Class from './Class.svelte';
   import plus from '../assets/icons/eva/plus-outline.svg?raw';
   import Button from './Button.svelte';
   import Icon from 'svelte-icon/Icon.svelte';
+  import { INTERNAL_BASE_ID } from './constants';
 
   const newClass = () => {
-    const subject = generateRandomSubject($localURL);
+    const subject = generateRandomSubject();
     $classesStore = [...$classesStore, subject];
   };
 

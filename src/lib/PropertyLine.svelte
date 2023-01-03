@@ -11,9 +11,10 @@
   import Dialog from './Dialog/Dialog.svelte';
   import ClassSelect, { type ClassItem } from './ClassSelect.svelte';
   import Button from './Button.svelte';
-  import { localURL } from './stores/localURL';
+  import { localURL } from './stores/config';
   import { generateRandomSubject } from './randomSubject';
   import { classesStore } from './stores/classes';
+  import { INTERNAL_BASE_ID } from './constants';
 
   const dispatch = createEventDispatcher<{
     delete: string;
@@ -44,7 +45,7 @@
   }
 
   const createNewLocalClass = async (name: string): Promise<string> => {
-    const newSubject = generateRandomSubject($localURL);
+    const newSubject = generateRandomSubject();
 
     const resource = $store.getResourceLoading(newSubject, {
       newResource: true,
@@ -53,7 +54,7 @@
     await resource.set(urls.properties.shortname, name, $store);
     await resource.set(urls.properties.description, '', $store);
     await resource.set(urls.properties.isA, [urls.classes.class], $store);
-    await resource.set(urls.properties.parent, $localURL, $store);
+    await resource.set(urls.properties.parent, INTERNAL_BASE_ID, $store);
 
     // Add the resource to the local properties store so other components can see it too.
     $classesStore = [...$classesStore, newSubject];
