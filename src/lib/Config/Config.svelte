@@ -4,6 +4,7 @@
   import { get } from 'svelte/store';
   import Button from '../Button.svelte';
   import Dialog from '../Dialog/Dialog.svelte';
+  import FormField from '../FormField.svelte';
   import { externalSources } from '../stores/collections';
   import { exportType, localURL } from '../stores/config';
   import TextArea from '../TextArea.svelte';
@@ -75,28 +76,28 @@
   </svelte:fragment>
   <svelte:fragment slot="content">
     <form>
-      <div class="form-field">
-        <label for="localURL">Base Subject:</label>
-        <TextInput
-          id="localURL"
-          bind:value={$localURL}
-          on:blur={handleLocalURLBlur}
-        />
-        <p class="helper">
+      <FormField>
+        <svelte:fragment slot="label">Base Subject:</svelte:fragment>
+        <svelte:fragment slot="input" let:id>
+          <TextInput {id} bind:value={$localURL} on:blur={handleLocalURLBlur} />
+        </svelte:fragment>
+        <svelte:fragment slot="helper">
           The url used to generate subjects for new classes and properties when
           exporting to a server this should be an exsiting resource on the
           server like a drive that will be the parent to all generated
           resources.
-        </p>
-      </div>
-      <div class="form-field">
-        <label for="data-sources">Data Sources:</label>
-        <TextArea id="data-sources" bind:value={sourcesValue} />
-        <p class="helper">
+        </svelte:fragment>
+      </FormField>
+      <FormField>
+        <svelte:fragment slot="label">Data Sources:</svelte:fragment>
+        <svelte:fragment slot="input" let:id>
+          <TextArea {id} bind:value={sourcesValue} />
+        </svelte:fragment>
+        <svelte:fragment slot="helper">
           Atomic data servers to pull property and class data from. (seperated
           by newline)
-        </p>
-      </div>
+        </svelte:fragment>
+      </FormField>
       <OutputForm bind:valid={outputFormValid} bind:outputConfig />
     </form>
   </svelte:fragment>
@@ -111,22 +112,9 @@
 </Dialog>
 
 <style>
-  .form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
   form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-  label {
-    font-weight: bold;
-  }
-
-  .helper {
-    color: var(--t-text-light);
   }
 </style>
