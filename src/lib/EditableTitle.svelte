@@ -39,7 +39,7 @@
       {title}
     </h2>
     <span class="icon">
-      <Icon data={editoutline} fill="white" />
+      <Icon data={editoutline} fill="white" stroke="none" />
     </span>
   </button>
 {/if}

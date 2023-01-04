@@ -4,7 +4,7 @@ const characters =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 export const generateRandomSubject = (length = 10) => {
-  return `${INTERNAL_BASE_ID}${generateRandomString(length)}`;
+  return `${INTERNAL_BASE_ID}/${generateRandomString(length)}`;
 };
 
 export const generateRandomString = (length = 10) => {

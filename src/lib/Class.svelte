@@ -3,13 +3,13 @@
   import { getResource, getValue } from '@tomic/svelte';
   import { createEventDispatcher } from 'svelte';
   import Icon from 'svelte-icon';
+  import { slide } from 'svelte/transition';
   import cubeoutline from '../assets/icons/eva/cube-outline.svg?raw';
   import trash2outline from '../assets/icons/eva/trash-2-outline.svg?raw';
   import { INTERNAL_BASE_ID } from './constants';
   import EditableTitle from './EditableTitle.svelte';
   import IconButton from './IconButton.svelte';
   import PropList from './PropList.svelte';
-  import { localURL } from './stores/config';
   import TextArea from './TextArea.svelte';
   const dispatch = createEventDispatcher<{ delete: string }>();
   export let subject: string;
@@ -36,9 +36,9 @@
   }
 </script>
 
-<div class="wrapper">
+<div class="wrapper" transition:slide={{ duration: 200 }}>
   <div style="grid-area: title" class="title">
-    <Icon data={cubeoutline} />
+    <Icon data={cubeoutline} stroke="none" />
     <EditableTitle bind:title={$name} />
     <span class="delete-icon-wrapper">
       <IconButton

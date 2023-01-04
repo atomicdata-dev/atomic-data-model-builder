@@ -31,7 +31,11 @@
     <slot name="content" />
   </div>
   <div class="line" />
-  <div class="controls">
+  <div class="bottom-wrapper">
+    <div class="error">
+      <slot name="error" />
+    </div>
+    <div class="controls" />
     <slot name="controls" />
   </div>
 </dialog>
@@ -77,8 +81,18 @@
     margin-block: 1rem;
     border-bottom: 1px solid var(--t-bg-light);
   }
+  .bottom-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .controls {
     display: flex;
-    justify-content: end;
+    gap: 1rem;
+  }
+
+  .error {
+    color: var(--red-8);
+    align-self: start;
   }
 </style>

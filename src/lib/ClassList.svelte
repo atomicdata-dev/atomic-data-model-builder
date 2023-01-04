@@ -22,6 +22,6 @@
   <Class subject={c} on:delete={handleClassDelete} />
 {/each}
 <Button on:click={newClass}>
-  <Icon data={plus} />
+  <Icon data={plus} stroke="none" />
   New Class
 </Button>

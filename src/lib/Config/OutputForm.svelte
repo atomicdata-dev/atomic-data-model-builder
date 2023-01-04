@@ -4,8 +4,7 @@
   export interface OutputConfig {
     type: 'json' | 'remote';
     remoteUrl?: string;
-    agentSubject?: string;
-    agentKey?: string;
+    agentSecret?: string;
   }
 </script>
 
@@ -16,21 +15,18 @@
 
   let outputType: OutputType = 'json';
   let remoteUrl = '';
-  let agentSubject = '';
-  let agentKey = '';
+  let agentSecret = '';
 
   export let outputConfig: OutputConfig;
 
   $: outputConfig = {
     type: outputType,
     remoteUrl,
-    agentSubject,
-    agentKey,
+    agentSecret,
   };
 
   $: if (outputType === 'remote') {
-    // Remote url must be set and the agent fields must either both be set or both be empty
-    valid = remoteUrl.length > 0 && !!agentSubject.length === !!agentKey.length;
+    valid = remoteUrl.length > 0 && agentSecret.length > 0;
   } else {
     valid = true;
   }
@@ -46,24 +42,30 @@
 
 <div>
   <h3>Export type:</h3>
-  <label for="output-type-json">JSON-AD</label>
-  <input
-    bind:group={outputType}
-    type="radio"
-    name="output-type"
-    id="output-type-json"
-    value="json"
-    checked={outputType === 'json'}
-  />
-  <label for="output-type-remote">Export to Server</label>
-  <input
-    bind:group={outputType}
-    type="radio"
-    name="output-type"
-    id="output-type-remote"
-    value="remote"
-    checked={outputType === 'remote'}
-  />
+  <div class="radio-group-wrapper">
+    <span>
+      <label for="output-type-json">JSON-AD</label>
+      <input
+        bind:group={outputType}
+        type="radio"
+        name="output-type"
+        id="output-type-json"
+        value="json"
+        checked={outputType === 'json'}
+      />
+    </span>
+    <span>
+      <label for="output-type-remote">Export to Server</label>
+      <input
+        bind:group={outputType}
+        type="radio"
+        name="output-type"
+        id="output-type-remote"
+        value="remote"
+        checked={outputType === 'remote'}
+      />
+    </span>
+  </div>
 </div>
 
 {#if outputType === 'remote'}
@@ -85,8 +87,7 @@
   <FormField>
     <svelte:fragment slot="label">Agent</svelte:fragment>
     <svelte:fragment slot="input" let:id>
-      <TextInput {id} bind:value={agentSubject} placeholder="Subject" />
-      <TextInput {id} bind:value={agentKey} placeholder="Private Key" />
+      <TextInput {id} bind:value={agentSecret} placeholder="Agent Secret" />
     </svelte:fragment>
     <svelte:fragment slot="helper">
       Agent used to commit changes to the server, leave empty to use the Public
@@ -94,3 +95,11 @@
     </svelte:fragment>
   </FormField>
 {/if}
+
+<style>
+  .radio-group-wrapper {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+</style>
