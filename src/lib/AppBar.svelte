@@ -26,7 +26,7 @@
           target="_blank"
           title="View source on GitHub"
         >
-          <Icon data={github} size="1.5rem" />
+          <Icon data={github} size="1.5rem" stroke="none" />
         </a>
       </div>
     </div>

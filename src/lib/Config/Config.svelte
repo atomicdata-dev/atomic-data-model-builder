@@ -15,42 +15,56 @@
   let outputConfig: OutputConfig;
 
   let sourcesValue: string = get(externalSources).join('\n');
+  let error = '';
 
   const handleDone = () => {
-    const sources = sourcesValue.split('\n');
+    try {
+      const sources = sourcesValue.split('\n');
 
-    const filtered = sources.filter(source => {
-      try {
-        new URL(source);
-        return true;
-      } catch (e) {
-        return false;
+      const filtered = sources.filter(source => {
+        try {
+          new URL(source);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      });
+
+      $externalSources = filtered;
+      $exportType = outputConfig.type;
+
+      if (outputConfig.type === 'remote') {
+        $store.setServerUrl(outputConfig.remoteUrl);
+
+        const remote = new URL(outputConfig.remoteUrl);
+        const local = new URL($localURL);
+
+        if (remote.origin !== local.origin) {
+          throw new Error(
+            'Base subject and Server URL must have the same origin (protocol, host and port)',
+          );
+        }
+
+        if (outputConfig.agentSecret) {
+          const agent = Agent.fromSecret(outputConfig.agentSecret);
+
+          $store.setAgent(agent);
+        } else {
+          $store.setAgent(undefined);
+        }
       }
-    });
 
-    $externalSources = filtered;
-    $exportType = outputConfig.type;
-
-    if (outputConfig.type === 'remote') {
-      $store.setServerUrl(outputConfig.remoteUrl);
-
-      if (outputConfig.agentSubject && outputConfig.agentKey) {
-        const agent = new Agent(
-          outputConfig.agentKey,
-          outputConfig.agentSubject,
-        );
-        $store.setAgent(agent);
-      } else {
-        $store.setAgent(undefined);
-      }
+      show = false;
+      error = '';
+    } catch (e) {
+      console.error(e);
+      error = e.message;
     }
-
-    show = false;
   };
 
   const handleLocalURLBlur = () => {
-    if (!$localURL.endsWith('/')) {
-      $localURL = $localURL + '/';
+    if ($localURL.endsWith('/')) {
+      $localURL = $localURL.slice(0, -1);
     }
   };
 </script>
@@ -62,7 +76,7 @@
   <svelte:fragment slot="content">
     <form>
       <div class="form-field">
-        <label for="localURL">Local URL:</label>
+        <label for="localURL">Base Subject:</label>
         <TextInput
           id="localURL"
           bind:value={$localURL}
@@ -86,8 +100,13 @@
       <OutputForm bind:valid={outputFormValid} bind:outputConfig />
     </form>
   </svelte:fragment>
+  <svelte:fragment slot="error">
+    {#if error}
+      {error}
+    {/if}
+  </svelte:fragment>
   <svelte:fragment slot="controls">
-    <Button on:click={handleDone} disabled={!outputFormValid}>Done</Button>
+    <Button on:click={handleDone} disabled={!outputFormValid}>Save</Button>
   </svelte:fragment>
 </Dialog>
 

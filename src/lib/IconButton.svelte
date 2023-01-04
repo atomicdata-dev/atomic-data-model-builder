@@ -8,7 +8,7 @@
 </script>
 
 <button on:click {disabled} {title} type="button">
-  <Icon data={icon} {size} />
+  <Icon data={icon} {size} stroke="none" />
 </button>
 
 <style>

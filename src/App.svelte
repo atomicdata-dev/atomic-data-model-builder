@@ -7,6 +7,7 @@
   import AppBar from './lib/AppBar.svelte';
   import Output from './lib/Output/Output.svelte';
   import cover from './assets/cover.jpg';
+  import Toast from './lib/Toast.svelte';
   onMount(() => {
     const store = new Store();
 
@@ -26,6 +27,7 @@
       <Output />
     </div>
   </Container>
+  <Toast />
 </main>
 
 <style>
